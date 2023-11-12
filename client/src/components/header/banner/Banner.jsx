@@ -12,6 +12,7 @@ const Banner = () => {
     <Carousel
       className="w-full text-center mx-auto"
       autoPlay
+      showStatus={false}
       interval="4000"
       transitionTime="2000"
       infiniteLoop
