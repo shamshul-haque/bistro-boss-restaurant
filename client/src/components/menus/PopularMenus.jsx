@@ -22,6 +22,11 @@ const PopularMenus = () => {
             <MenuItems key={item?._id} item={item} />
           ))}
         </div>
+        <div className="flex justify-center">
+          <button className="border-0 border-b-2 p-2 rounded-lg">
+            Read More
+          </button>
+        </div>
       </section>
     </Container>
   );
