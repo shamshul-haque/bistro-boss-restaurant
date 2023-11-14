@@ -20,16 +20,16 @@ const Featured = () => {
             <div>
               <img src={featured_img} alt="featured_img" />
             </div>
-            <div>
-              <p>Aug 20, 2023</p>
-              <h1>Where can I get some?</h1>
+            <div className="space-y-2">
+              <p className="text-sm">Aug 20, 2023</p>
+              <h1 className="uppercase font-bold">Where can I get some?</h1>
               <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo,
                 accusamus provident? Voluptates nisi placeat harum aspernatur
                 minus perferendis quis, repudiandae iste aliquid voluptatibus
                 consequuntur eaque? Nesciunt expedita tempore illo repellat?
               </p>
-              <button className="border-0 border-b-2 p-2 rounded-lg">
+              <button className="border-b-2 p-2 rounded-lg hover:text-yellow-600 hover:border-yellow-600 transition-all duration-500">
                 Read More
               </button>
             </div>

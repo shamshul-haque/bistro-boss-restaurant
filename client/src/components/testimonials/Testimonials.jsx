@@ -1,14 +1,14 @@
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
-import { FaQuoteLeft } from "react-icons/fa";
-import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SectionTitle from "../sectionTitle/SectionTitle";
-
 import { useEffect, useState } from "react";
+import { FaQuoteLeft } from "react-icons/fa";
 import "swiper/css";
+import "swiper/css/autoplay";
 import "swiper/css/navigation";
+import { Autoplay, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import Container from "../container/Container";
+import SectionTitle from "../sectionTitle/SectionTitle";
 
 const Testimonials = () => {
   const [reviews, setReviews] = useState([]);
@@ -26,7 +26,7 @@ const Testimonials = () => {
         subHeading={"What Our Clients Say"}
       />
       <Container>
-        <Swiper navigation={true} modules={[Navigation]}>
+        <Swiper modules={[Navigation, Autoplay]} navigation autoplay>
           {reviews?.map((review) => (
             <SwiperSlide key={review._id}>
               <div className="flex flex-col items-center mt-6 md:px-20 space-y-4">
