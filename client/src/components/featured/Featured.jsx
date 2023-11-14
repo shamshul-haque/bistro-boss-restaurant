@@ -29,7 +29,9 @@ const Featured = () => {
                 minus perferendis quis, repudiandae iste aliquid voluptatibus
                 consequuntur eaque? Nesciunt expedita tempore illo repellat?
               </p>
-              <button className="btn">Order Now</button>
+              <button className="border-0 border-b-2 p-2 rounded-lg">
+                Read More
+              </button>
             </div>
           </div>
         </Container>
