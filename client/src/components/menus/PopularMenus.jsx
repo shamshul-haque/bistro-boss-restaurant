@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Container from "../container/Container";
 import SectionTitle from "../sectionTitle/SectionTitle";
 import MenuItems from "./MenuItems";
@@ -23,9 +24,12 @@ const PopularMenus = () => {
           ))}
         </div>
         <div className="flex justify-center">
-          <button className="border-b-2 p-2 rounded-lg hover:text-yellow-600 hover:border-yellow-600 transition-all duration-500">
-            Read More
-          </button>
+          <Link
+            to="/our-menus"
+            className="border-b-2 p-2 rounded-lg hover:text-yellow-600 hover:border-yellow-600 transition-all duration-500 uppercase"
+          >
+            View All Menu
+          </Link>
         </div>
       </section>
     </Container>
