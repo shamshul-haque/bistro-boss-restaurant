@@ -4,7 +4,7 @@ import NavbarSM from "./NavbarSM";
 
 const Navbar = () => {
   return (
-    <div className="w-full max-w-screen-xl fixed z-50 bg-black bg-opacity-25 text-white py-5">
+    <div className="w-full max-w-screen-xl fixed z-50 bg-black bg-opacity-25 text-white py-2">
       <Container>
         <div className="flex justify-between items-center">
           {/* logo */}
