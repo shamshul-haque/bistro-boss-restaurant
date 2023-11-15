@@ -5,7 +5,7 @@ import ChefRecommends from "../../components/chefRecommends/ChefRecommends";
 import Contact from "../../components/contact/Contact";
 import Featured from "../../components/featured/Featured";
 import Banner from "../../components/header/banner/Banner";
-import PopularMenus from "../../components/menus/PopularMenus";
+import OurMenus from "../../components/menus/OurMenus";
 import Testimonials from "../../components/testimonials/Testimonials";
 
 const Home = () => {
@@ -17,7 +17,7 @@ const Home = () => {
       <Banner />
       <Category />
       <About />
-      <PopularMenus />
+      <OurMenus />
       <Contact />
       <Featured />
       <ChefRecommends />
