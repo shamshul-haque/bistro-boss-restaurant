@@ -10,7 +10,7 @@ import MenuCategory from "../../components/menus/MenuCategory";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
 import useMenu from "../../hooks/useMenu";
 
-const Menu = () => {
+const OurMenu = () => {
   const { menu } = useMenu();
   const offered = menu.filter((item) => item?.category === "offered");
   const dessert = menu.filter((item) => item?.category === "dessert");
@@ -90,4 +90,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default OurMenu;

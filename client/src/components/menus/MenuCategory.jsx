@@ -16,7 +16,7 @@ const MenuCategory = ({ menus, title, img, desc }) => {
         </div>
         <div className="flex justify-center">
           <Link
-            to="/our-menus"
+            to="/our-menu"
             className="border-b-2 p-2 rounded-lg hover:text-yellow-600 hover:border-yellow-600 transition-all duration-500 uppercase"
           >
             ORDER YOUR FAVORITE FOOD

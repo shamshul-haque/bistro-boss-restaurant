@@ -14,7 +14,7 @@ const NavbarLG = () => {
         Home
       </NavLink>
       <NavLink
-        to="/our-menus"
+        to="/our-menu"
         className={({ isActive }) =>
           isActive
             ? "text-yellow-600 active border-yellow-600 border-b py-1 "
