@@ -41,7 +41,7 @@ const OurMenu = () => {
       <div className="my-12">
         <MenuCategory
           menus={dessert}
-          title="Desserts"
+          title="dessert"
           img={dessert_bg}
           desc="Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
         />
@@ -51,7 +51,7 @@ const OurMenu = () => {
       <div className="my-12">
         <MenuCategory
           menus={pizza}
-          title="Pizza"
+          title="pizza"
           img={pizza_bg}
           desc="Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
         />
@@ -61,7 +61,7 @@ const OurMenu = () => {
       <div className="my-12">
         <MenuCategory
           menus={salad}
-          title="Salad"
+          title="salad"
           img={salad_bg}
           desc="Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
         />
@@ -71,7 +71,7 @@ const OurMenu = () => {
       <div className="my-12">
         <MenuCategory
           menus={soup}
-          title="Soup"
+          title="soup"
           img={soup_bg}
           desc="Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
         />
@@ -81,7 +81,7 @@ const OurMenu = () => {
       <div className="my-12">
         <MenuCategory
           menus={drinks}
-          title="Drinks"
+          title="drinks"
           img={drinks_bg}
           desc="Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
         />
