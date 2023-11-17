@@ -42,6 +42,16 @@ const NavbarSM = () => {
           >
             Our Shop
           </NavLink>
+          <NavLink
+            to="/login"
+            className={({ isActive }) =>
+              isActive
+                ? "text-yellow-600 active border-yellow-600 border-b py-1 "
+                : "py-1"
+            }
+          >
+            Login
+          </NavLink>
         </div>
       </div>
     </div>
