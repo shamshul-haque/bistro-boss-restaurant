@@ -1,38 +1,18 @@
-import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import {
-  LoadCanvasTemplate,
-  loadCaptchaEnginge,
-  validateCaptcha,
-} from "react-simple-captcha";
 import auth_bg from "../../assets/auth/auth_bg.png";
 import auth_img from "../../assets/auth/auth_img.png";
 import SocialLogin from "./SocialLogin";
 
-const Login = () => {
-  const captchaRef = useRef(null);
-  const [disabled, setDisabled] = useState(true);
-
-  useEffect(() => {
-    loadCaptchaEnginge(6);
-  }, []);
-
-  const handleValidateCaptcha = () => {
-    const user_captcha_value = captchaRef.current.value;
-    if (validateCaptcha(user_captcha_value) == true) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  };
-
-  const handleLogin = (e) => {
+const Register = () => {
+  const handleRegister = (e) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
+    const name = form.get("name");
     const email = form.get("email");
     const password = form.get("password");
-    console.log(email, password);
+    const photo = form.get("photo");
+    console.log(name, email, password, photo);
   };
 
   return (
@@ -46,7 +26,7 @@ const Login = () => {
       className="flex justify-center items-center"
     >
       <Helmet>
-        <title>Login | Bistro Boss</title>
+        <title>Register | Bistro Boss</title>
       </Helmet>
 
       <div
@@ -63,8 +43,18 @@ const Login = () => {
           <img src={auth_img} alt="auth_img" />
         </div>
         <div className="flex-1 w-full">
-          <h1 className="text-4xl font-bold text-center uppercase">Login</h1>
-          <form onSubmit={handleLogin} className="space-y-5 w-full">
+          <h1 className="text-4xl font-bold text-center uppercase">Sign Up</h1>
+          <form onSubmit={handleRegister} className="space-y-5 w-full">
+            <div className="form-control space-y-1">
+              <label>Name</label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter your name"
+                className="outline-0 border p-2 rounded text-sm"
+                required
+              />
+            </div>
             <div className="form-control space-y-1">
               <label>Email</label>
               <input
@@ -85,36 +75,28 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="form-control flex flex-col md:flex-row md:gap-5">
-              <label>
-                <LoadCanvasTemplate />
-              </label>
+            <div className="form-control space-y-1">
+              <label>Profile Picture</label>
               <input
-                ref={captchaRef}
-                onBlur={handleValidateCaptcha}
-                type="text"
-                name="captcha"
-                placeholder="Type the captcha"
-                className="w-full outline-0 border p-2 rounded text-sm"
-                required
+                type="url"
+                name="photo"
+                placeholder="Upload your photo"
+                className="outline-0 border p-2 rounded text-sm"
               />
             </div>
             <div className="form-control">
-              <button
-                disabled={disabled}
-                className="bg-yellow-600 transition-all duration-500 p-2 rounded uppercase text-white font-medium disabled:bg-slate-200"
-              >
-                Login
+              <button className="bg-yellow-600 transition-all duration-500 p-2 rounded uppercase text-white font-medium disabled:bg-slate-200">
+                Sign Up
               </button>
             </div>
           </form>
           <p className="text-sm text-center pt-5">
-            <span>New Here? </span>
+            <span>Already Registered? </span>
             <Link
-              to="/register"
+              to="/login"
               className="text-yellow-600 hover:underline font-medium"
             >
-              Create new account
+              Go to login
             </Link>
           </p>
           <SocialLogin />
@@ -124,4 +106,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

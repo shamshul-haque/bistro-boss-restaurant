@@ -4,13 +4,15 @@ import Navbar from "../components/header/navbar/Navbar";
 
 const MainLayout = () => {
   const location = useLocation();
-  const isLogin = location.pathname.includes("login");
+  const authPath =
+    location.pathname.includes("login") ||
+    location.pathname.includes("register");
 
   return (
     <div>
-      {isLogin || <Navbar />}
+      {authPath || <Navbar />}
       <Outlet />
-      {isLogin || <Footer />}
+      {authPath || <Footer />}
     </div>
   );
 };
