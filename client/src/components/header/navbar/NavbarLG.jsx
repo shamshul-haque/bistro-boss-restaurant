@@ -13,10 +13,8 @@ const NavbarLG = () => {
       });
   };
 
-  console.log(user);
-
   return (
-    <div className="flex justify-between gap-5">
+    <div className="flex items-center justify-between gap-5">
       <NavLink
         to="/"
         className={({ isActive }) =>
@@ -41,36 +39,30 @@ const NavbarLG = () => {
       >
         Our Shop
       </NavLink>
-      <NavLink to="/" className="">
-        <button className="btn">
-          <FaShoppingCart />
-          <div className="badge badge-secondary">+0</div>
-        </button>
-      </NavLink>
+      <Link to="/" className="relative">
+        <FaShoppingCart className="text-2xl" />
+        <p className="absolute -top-2 -right-2 bg-yellow-600 text-xs rounded-full px-1">
+          9+
+        </p>
+      </Link>
       {user ? (
         <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-            <div className="w-10 rounded-full">
-              <img alt="profile picture" src={user?.photoURL} />
-            </div>
+          <label tabIndex={0} className="btn btn-circle avatar">
+            <img
+              alt="profile picture"
+              src={user?.photoURL}
+              className="rounded-full"
+            />
           </label>
-          <ul
+          <div
             tabIndex={0}
-            className="mt-3 z-[1] p-3 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+            className="mt-3 z-50 p-5 shadow menu-sm dropdown-content bg-black rounded-box w-52"
           >
-            <li>
-              <a>{user?.displayName}</a>
-            </li>
-            <li>
-              <Link
-                to="/"
-                onClick={handleLogout}
-                className="bg-yellow-600 hover:bg-transparent hover:border hover:border-yellow-600 transition-all duration-500 p-2 rounded uppercase text-white"
-              >
-                Logout
-              </Link>
-            </li>
-          </ul>
+            <h1 className="font-bold">{user?.displayName}</h1>
+            <Link to="/" onClick={handleLogout}>
+              Logout
+            </Link>
+          </div>
         </div>
       ) : (
         <Link
