@@ -1,25 +1,41 @@
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import auth_bg from "../../assets/auth/auth_bg.png";
 import auth_img from "../../assets/auth/auth_img.png";
 import useAuth from "../../hooks/useAuth";
 import SocialLogin from "./SocialLogin";
 
 const Register = () => {
-  const { createUser } = useAuth();
+  const { createUser, updateUserProfile, logoutUser } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    createUser(data?.email, data?.password).then((result) => {
-      console.log(result.user);
-    });
+    reset();
+    createUser(data?.email, data?.password)
+      .then(() => {
+        updateUserProfile(data?.name, data?.photo);
+        logoutUser();
+        navigate("/login");
+        toast?.success("Account created!", {
+          position: "top-right",
+          theme: "colored",
+        });
+      })
+      .catch((error) => {
+        toast?.error(error?.code, {
+          position: "top-right",
+          theme: "colored",
+        });
+      });
   };
 
   return (
@@ -56,7 +72,7 @@ const Register = () => {
                 placeholder="Enter your name"
                 className="outline-0 border p-2 rounded text-sm"
               />
-              {errors.name?.type === "required" && (
+              {errors?.name?.type === "required" && (
                 <span className="text-red-500">Name is required</span>
               )}
             </div>
@@ -68,7 +84,7 @@ const Register = () => {
                 placeholder="Enter your email"
                 className="outline-0 border p-2 rounded text-sm"
               />
-              {errors.email?.type === "required" && (
+              {errors?.email?.type === "required" && (
                 <span className="text-red-500">Email is required</span>
               )}
             </div>
@@ -84,15 +100,15 @@ const Register = () => {
                 placeholder="Type your password"
                 className="outline-0 border p-2 rounded text-sm"
               />
-              {errors.password?.type === "required" && (
+              {errors?.password?.type === "required" && (
                 <span className="text-red-500">Password is required</span>
               )}
-              {errors.password?.type === "minLength" && (
+              {errors?.password?.type === "minLength" && (
                 <span className="text-red-500">
                   Password must be 8 characters
                 </span>
               )}
-              {errors.password?.type === "pattern" && (
+              {errors?.password?.type === "pattern" && (
                 <span className="text-red-500">
                   Password should contain at least one uppercase letter, one
                   lowercase letter, one number, and one special character..
@@ -103,10 +119,13 @@ const Register = () => {
               <label>Profile Picture</label>
               <input
                 type="url"
-                {...register("photo")}
+                {...register("photo", { required: true })}
                 placeholder="Upload your photo"
                 className="outline-0 border p-2 rounded text-sm"
               />
+              {errors?.photo?.type === "required" && (
+                <span className="text-red-500">Photo url is required</span>
+              )}
             </div>
             <div className="form-control">
               <input
