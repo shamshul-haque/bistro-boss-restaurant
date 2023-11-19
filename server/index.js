@@ -29,6 +29,15 @@ async function run() {
   try {
     // await client.connect();
 
+    // db collections
+    const menuCollection = client.db("bistroDB").collection("menus");
+
+    app.get("/api/v1/menus", async (req, res) => {
+      const cursor = menuCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // confirm server connection
     await client.db("admin").command({ ping: 1 });
     console.log(
