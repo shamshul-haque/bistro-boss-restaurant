@@ -22,6 +22,14 @@ const Testimonials = () => {
     },
   });
 
+  if (isLoading) {
+    return (
+      <div className="w-full flex justify-center items-center">
+        <span className="loading loading-bars w-40 py-40"></span>
+      </div>
+    );
+  }
+
   return (
     <section className="my-12">
       <SectionTitle

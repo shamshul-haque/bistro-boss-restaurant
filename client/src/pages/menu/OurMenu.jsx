@@ -11,7 +11,14 @@ import SectionTitle from "../../components/sectionTitle/SectionTitle";
 import useMenu from "../../hooks/useMenu";
 
 const OurMenu = () => {
-  const { menu } = useMenu();
+  const { menu, isLoading } = useMenu();
+  if (isLoading) {
+    return (
+      <div className="w-full flex justify-center items-center">
+        <span className="loading loading-bars w-40 py-40"></span>
+      </div>
+    );
+  }
   const offered = menu?.filter((item) => item?.category === "offered");
   const dessert = menu?.filter((item) => item?.category === "dessert");
   const pizza = menu?.filter((item) => item?.category === "pizza");

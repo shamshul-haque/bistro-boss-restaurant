@@ -5,9 +5,15 @@ import SectionTitle from "../sectionTitle/SectionTitle";
 import MenuItems from "./MenuItems";
 
 const PopularMenus = () => {
-  const { menu } = useMenu();
+  const { menu, isLoading } = useMenu();
+  if (isLoading) {
+    return (
+      <div className="w-full flex justify-center items-center">
+        <span className="loading loading-bars w-40 py-40"></span>
+      </div>
+    );
+  }
   const popular = menu?.filter((item) => item?.category === "popular");
-  console.log(popular);
 
   return (
     <Container>
