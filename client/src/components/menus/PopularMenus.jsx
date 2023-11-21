@@ -6,14 +6,15 @@ import MenuItems from "./MenuItems";
 
 const PopularMenus = () => {
   const { menu } = useMenu();
-  const popular = menu.filter((item) => item?.category === "popular");
+  const popular = menu?.filter((item) => item?.category === "popular");
+  console.log(popular);
 
   return (
     <Container>
       <section className="my-12">
         <SectionTitle heading="FROM OUR MENU" subHeading="Check it out" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-6">
-          {popular.map((item) => (
+          {popular?.map((item) => (
             <MenuItems key={item?._id} item={item} />
           ))}
         </div>

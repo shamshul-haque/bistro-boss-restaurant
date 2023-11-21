@@ -16,11 +16,11 @@ const OurShop = () => {
   const [tabIndex, setTabIndex] = useState(initialIndex);
   const { menu } = useMenu();
 
-  const salad = menu.filter((item) => item?.category === "salad");
-  const soup = menu.filter((item) => item?.category === "soup");
-  const pizza = menu.filter((item) => item?.category === "pizza");
-  const dessert = menu.filter((item) => item?.category === "dessert");
-  const drinks = menu.filter((item) => item?.category === "drinks");
+  const salad = menu?.filter((item) => item?.category === "salad");
+  const soup = menu?.filter((item) => item?.category === "soup");
+  const pizza = menu?.filter((item) => item?.category === "pizza");
+  const dessert = menu?.filter((item) => item?.category === "dessert");
+  const drinks = menu?.filter((item) => item?.category === "drinks");
 
   return (
     <div>
@@ -47,35 +47,35 @@ const OurShop = () => {
             </TabList>
             <TabPanel>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10 ">
-                {salad.map((item) => (
+                {salad?.map((item) => (
                   <FoodCard key={item._id} item={item} />
                 ))}
               </div>
             </TabPanel>
             <TabPanel>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10 ">
-                {soup.map((item) => (
+                {soup?.map((item) => (
                   <FoodCard key={item._id} item={item} />
                 ))}
               </div>
             </TabPanel>
             <TabPanel>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10 ">
-                {pizza.map((item) => (
+                {pizza?.map((item) => (
                   <FoodCard key={item._id} item={item} />
                 ))}
               </div>
             </TabPanel>
             <TabPanel>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10 ">
-                {dessert.map((item) => (
+                {dessert?.map((item) => (
                   <FoodCard key={item._id} item={item} />
                 ))}
               </div>
             </TabPanel>
             <TabPanel>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10 ">
-                {drinks.map((item) => (
+                {drinks?.map((item) => (
                   <FoodCard key={item._id} item={item} />
                 ))}
               </div>
