@@ -31,9 +31,16 @@ async function run() {
 
     // db collections
     const menuCollection = client.db("bistroDB").collection("menus");
+    const reviewCollection = client.db("bistroDB").collection("reviews");
 
     app.get("/api/v1/menus", async (req, res) => {
       const cursor = menuCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/api/v1/reviews", async (req, res) => {
+      const cursor = reviewCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
