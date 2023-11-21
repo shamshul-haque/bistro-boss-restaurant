@@ -39,7 +39,7 @@ const Contact = () => {
 
   const onSubmit = (data) => {
     reset();
-    toast?.info(`We received your message${data?.name}!`, {
+    toast?.info(`We received your message, Mr. ${data?.name}!`, {
       position: "top-right",
       theme: "colored",
     });
@@ -94,12 +94,26 @@ const Contact = () => {
                 <label>Phone Number</label>
                 <input
                   type="number"
-                  {...register("phone", { required: true })}
+                  {...register("phone", {
+                    required: true,
+                    minLength: 11,
+                    maxLength: 13,
+                  })}
                   placeholder="Enter your Phone number"
                   className="outline-0 border p-2 rounded text-sm"
                 />
                 {errors?.phone?.type === "required" && (
                   <span className="text-red-500">Phone number is required</span>
+                )}
+                {errors?.phone?.type === "minLength" && (
+                  <span className="text-red-500">
+                    Minimum length of should be 11
+                  </span>
+                )}
+                {errors?.phone?.type === "maxLength" && (
+                  <span className="text-red-500">
+                    Maximum length should be 13
+                  </span>
                 )}
               </div>
               <div className="form-control flex-1">

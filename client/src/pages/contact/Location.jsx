@@ -13,7 +13,7 @@ const Location = () => {
             <div className="bg-yellow-600 p-3 flex justify-center">
               <FaPhoneVolume className="text-white" />
             </div>
-            <div className="bg-gray-200 mx-5 mb-5 space-y-2 py-10">
+            <div className="bg-gray-200 mx-5 mb-5 space-y-2 flex flex-col items-center justify-center h-32">
               <h1 className="uppercase font-bold">Phone</h1>
               <Link
                 to="tel:+880 1406680846"
@@ -27,7 +27,7 @@ const Location = () => {
             <div className="bg-yellow-600 p-3 flex justify-center">
               <FaLocationDot className="text-white" />
             </div>
-            <div className="bg-gray-200 mx-5 mb-5 space-y-2 py-10">
+            <div className="bg-gray-200 mx-5 mb-5 space-y-2 flex flex-col items-center justify-center h-32">
               <h1 className="uppercase font-bold">Address</h1>
               <p className="text-sm md:text-xs lg:text-sm">
                 Mirpur-10, Dhaka, Bangladesh
@@ -38,7 +38,7 @@ const Location = () => {
             <div className="bg-yellow-600 p-3 flex justify-center">
               <FaClock className="text-white" />
             </div>
-            <div className="bg-gray-200 mx-5 mb-5 space-y-2 py-10">
+            <div className="bg-gray-200 mx-5 mb-5 space-y-2 flex flex-col items-center justify-center h-32">
               <h1 className="uppercase font-bold">Working Hour</h1>
               <div>
                 <p className="text-sm md:text-xs lg:text-sm">

@@ -6,6 +6,7 @@ import Contact from "../pages/contact/Contact";
 import Home from "../pages/home/Home";
 import OurMenu from "../pages/menu/OurMenu";
 import OurShop from "../pages/shop/OurShop";
+import PrivateRoutes from "./PrivateRoutes";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/contact-us",
-        element: <Contact />,
+        element: (
+          <PrivateRoutes>
+            <Contact />
+          </PrivateRoutes>
+        ),
       },
       {
         path: "/login",

@@ -18,9 +18,9 @@ const NavbarSM = () => {
     <div className="flex items-center gap-3">
       <Link to="/" className="relative">
         <FaShoppingCart className="text-2xl" />
-        <p className="absolute -top-2 -right-2 bg-yellow-600 text-xs rounded-full px-1">
+        <span className="absolute -top-2 -right-2 bg-yellow-600 text-xs rounded-full px-1">
           9+
-        </p>
+        </span>
       </Link>
       <div className="dropdown dropdown-end z-50">
         <label tabIndex={0} className="btn m-1">
