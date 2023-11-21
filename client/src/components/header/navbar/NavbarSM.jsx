@@ -71,6 +71,16 @@ const NavbarSM = () => {
             >
               Our Shop
             </NavLink>
+            <NavLink
+              to="/contact-us"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-yellow-600 border-yellow-600 border-b py-1 "
+                  : "py-1"
+              }
+            >
+              Contact Us
+            </NavLink>
             {user ? (
               <Link to="/" onClick={handleLogout}>
                 Logout

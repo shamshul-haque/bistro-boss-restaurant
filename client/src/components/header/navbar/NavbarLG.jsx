@@ -39,6 +39,14 @@ const NavbarLG = () => {
       >
         Our Shop
       </NavLink>
+      <NavLink
+        to="/contact-us"
+        className={({ isActive }) =>
+          isActive ? "text-yellow-600 border-yellow-600 border-b py-1 " : "py-1"
+        }
+      >
+        Contact Us
+      </NavLink>
       <Link to="/" className="relative">
         <FaShoppingCart className="text-2xl" />
         <p className="absolute -top-2 -right-2 bg-yellow-600 text-xs rounded-full px-1">

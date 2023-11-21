@@ -1,32 +1,12 @@
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-// import {
-//   LoadCanvasTemplate,
-//   loadCaptchaEnginge,
-//   validateCaptcha,
-// } from "react-simple-captcha";
 import auth_bg from "../../assets/auth/auth_bg.png";
 import auth_img from "../../assets/auth/auth_img.png";
 import useAuth from "../../hooks/useAuth";
 import SocialLogin from "./SocialLogin";
 
 const Login = () => {
-  // const captchaRef = useRef(null);
-  // const [disabled, setDisabled] = useState(true);
   const { loginUser } = useAuth();
-
-  // useEffect(() => {
-  //   loadCaptchaEnginge(6);
-  // }, []);
-
-  // const handleValidateCaptcha = () => {
-  //   const user_captcha_value = captchaRef.current.value;
-  //   if (validateCaptcha(user_captcha_value) == true) {
-  //     setDisabled(false);
-  //   } else {
-  //     setDisabled(true);
-  //   }
-  // };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -89,25 +69,10 @@ const Login = () => {
                 required
               />
             </div>
-            {/* <div className="form-control flex flex-col md:flex-row md:gap-5">
-              <label>
-                <LoadCanvasTemplate />
-              </label>
-              <input
-                ref={captchaRef}
-                onBlur={handleValidateCaptcha}
-                type="text"
-                name="captcha"
-                placeholder="Type the captcha"
-                className="w-full outline-0 border p-2 rounded text-sm"
-                required
-              />
-            </div> */}
             <div className="form-control">
               <input
                 type="submit"
                 value="Login"
-                // disabled={disabled}
                 className="bg-yellow-600 transition-all duration-500 p-2 rounded uppercase text-white font-medium disabled:bg-slate-200"
               />
             </div>
