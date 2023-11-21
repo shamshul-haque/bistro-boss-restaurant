@@ -1,17 +1,23 @@
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 const NavbarSM = () => {
   const { user, logoutUser } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
-  const handleLogout = () => {
-    logoutUser()
-      .then(() => {})
-      .catch((err) => {
-        console.log(err);
+  const handleLogout = async () => {
+    logoutUser();
+    const res = await axiosPrivate.post("/users/logout");
+    if (res?.data?.success) {
+      toast?.success("Logout successful!", {
+        position: "top-right",
+        theme: "colored",
       });
+    }
   };
 
   return (

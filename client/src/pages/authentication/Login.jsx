@@ -1,13 +1,19 @@
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import auth_bg from "../../assets/auth/auth_bg.png";
 import auth_img from "../../assets/auth/auth_img.png";
 import useAuth from "../../hooks/useAuth";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import SocialLogin from "./SocialLogin";
 
 const Login = () => {
-  const { loginUser } = useAuth();
+  const { loginUser, logoutUser } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state?.from || "/";
 
   const {
     register,
@@ -16,25 +22,32 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     reset();
-    console.log(data);
-    // createUser(data?.email, data?.password)
-    //   .then(() => {
-    //     updateUserProfile(data?.name, data?.photo);
-    //     logoutUser();
-    //     navigate("/login");
-    //     toast?.success("Account created!", {
-    //       position: "top-right",
-    //       theme: "colored",
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     toast?.error(error?.code, {
-    //       position: "top-right",
-    //       theme: "colored",
-    //     });
-    //   });
+    try {
+      const user = await loginUser(data?.email, data?.password);
+      const res = await axiosPrivate.post("/users/access-token", {
+        email: user?.user?.email,
+      });
+      if (res?.data?.success) {
+        toast?.success("Login successful!", {
+          position: "top-right",
+          theme: "colored",
+        });
+        if (user) {
+          navigate(from, {
+            replace: true,
+          });
+        }
+      } else {
+        logoutUser();
+      }
+    } catch (err) {
+      toast?.error(err?.code, {
+        position: "top-right",
+        theme: "colored",
+      });
+    }
   };
 
   return (
@@ -95,7 +108,7 @@ const Login = () => {
               <input
                 type="submit"
                 value="Login"
-                className="bg-yellow-600 transition-all duration-500 p-2 rounded uppercase text-white font-medium disabled:bg-slate-200"
+                className="bg-yellow-600 transition-all duration-500 p-2 rounded uppercase text-white font-medium disabled:bg-slate-200 cursor-pointer"
               />
             </div>
           </form>

@@ -1,16 +1,22 @@
 import { FaShoppingCart } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 const NavbarLG = () => {
   const { user, logoutUser } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
-  const handleLogout = () => {
-    logoutUser()
-      .then(() => {})
-      .catch((err) => {
-        console.log(err);
+  const handleLogout = async () => {
+    logoutUser();
+    const res = await axiosPrivate.post("/users/logout");
+    if (res?.data?.success) {
+      toast?.success("Logout successful!", {
+        position: "top-rights",
+        theme: "colored",
       });
+    }
   };
 
   return (

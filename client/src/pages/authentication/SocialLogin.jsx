@@ -1,14 +1,41 @@
 import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const SocialLogin = () => {
-  const { googleLogin } = useAuth();
+  const { googleLogin, logoutUser } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state?.from || "/";
 
-  const handleGoogleLogin = () => {
-    googleLogin().then((result) => {
-      console.log(result.user);
-    });
+  const handleGoogleLogin = async () => {
+    try {
+      const user = await googleLogin();
+      const res = await axiosPrivate.post("/users/access-token", {
+        email: user?.user?.email,
+      });
+      if (res?.data?.success) {
+        toast?.success("Login successful!", {
+          position: "top-right",
+          theme: "colored",
+        });
+        if (user) {
+          navigate(from, {
+            replace: true,
+          });
+        }
+      } else {
+        logoutUser();
+      }
+    } catch (err) {
+      toast?.error(err?.code, {
+        position: "top-right",
+        theme: "colored",
+      });
+    }
   };
 
   return (
