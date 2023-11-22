@@ -3,17 +3,26 @@ import { Link, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import useCart from "../../../hooks/useCart";
 
 const NavbarLG = () => {
   const { user, logoutUser } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const { cart, isLoading } = useCart();
+  if (isLoading) {
+    return (
+      <div className="w-full flex justify-center items-center">
+        <span className="loading loading-bars w-40 py-40"></span>
+      </div>
+    );
+  }
 
   const handleLogout = async () => {
     logoutUser();
     const res = await axiosPrivate.post("/users/logout");
     if (res?.data?.success) {
       toast?.success("Logout successful!", {
-        position: "top-rights",
+        position: "top-right",
         theme: "colored",
       });
     }
@@ -56,7 +65,7 @@ const NavbarLG = () => {
       <Link to="/" className="relative">
         <FaShoppingCart className="text-2xl" />
         <p className="absolute -top-2 -right-2 bg-yellow-600 text-xs rounded-full px-1">
-          9+
+          {cart?.length}
         </p>
       </Link>
       {user ? (

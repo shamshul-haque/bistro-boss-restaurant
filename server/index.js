@@ -53,6 +53,17 @@ async function run() {
     // db collections
     const menuCollection = client.db("bistroDB").collection("menus");
     const reviewCollection = client.db("bistroDB").collection("reviews");
+    const cartCollection = client.db("bistroDB").collection("carts");
+
+    app.get("/api/v1/menus", async (req, res) => {
+      const result = await menuCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/api/v1/reviews", async (req, res) => {
+      const result = await reviewCollection.find().toArray();
+      res.send(result);
+    });
 
     app.post("/api/v1/users/access-token", async (req, res) => {
       const user = req.body;
@@ -76,15 +87,16 @@ async function run() {
         .send({ success: true });
     });
 
-    app.get("/api/v1/menus", async (req, res) => {
-      const cursor = menuCollection.find();
-      const result = await cursor.toArray();
+    app.post("/api/v1/users/cartItems", async (req, res) => {
+      const cartItem = req.body;
+      const result = await cartCollection.insertOne(cartItem);
       res.send(result);
     });
 
-    app.get("/api/v1/reviews", async (req, res) => {
-      const cursor = reviewCollection.find();
-      const result = await cursor.toArray();
+    app.get("/api/v1/users/cartItems", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const result = await cartCollection.find(query).toArray();
       res.send(result);
     });
 

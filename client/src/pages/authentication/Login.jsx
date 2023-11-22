@@ -58,7 +58,7 @@ const Login = () => {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
       }}
-      className="flex justify-center items-center"
+      className="min-h-[100vh] flex justify-center items-center"
     >
       <Helmet>
         <title>Login | Bistro Boss</title>
@@ -66,10 +66,6 @@ const Login = () => {
 
       <div
         style={{
-          backgroundImage: `url(${auth_bg})`,
-          backgroundPosition: "center center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
           boxShadow: "10px 10px 20px rgba(0, 0, 0, 0.5)",
         }}
         className="flex flex-col md:flex-row items-center justify-center gap-5 md:gap-10 p-5 md:p-10 m-5 md:m-10"
