@@ -19,6 +19,7 @@ const NavbarLG = () => {
 
   const handleLogout = async () => {
     logoutUser();
+    cart.length = 0;
     const res = await axiosPrivate.post("/users/logout");
     if (res?.data?.success) {
       toast?.success("Logout successful!", {
@@ -62,7 +63,7 @@ const NavbarLG = () => {
       >
         Contact Us
       </NavLink>
-      <Link to="/" className="relative">
+      <Link to="/dashboard/my-cart" className="relative">
         <FaShoppingCart className="text-2xl" />
         <p className="absolute -top-2 -right-2 bg-yellow-600 text-xs rounded-full px-1">
           {cart?.length}
@@ -79,9 +80,10 @@ const NavbarLG = () => {
           </label>
           <div
             tabIndex={0}
-            className="mt-3 z-50 p-5 shadow menu-sm dropdown-content bg-black rounded-box w-52"
+            className="mt-3 z-50 p-5 shadow menu-sm dropdown-content bg-black rounded-box w-52 flex flex-col"
           >
             <h1 className="font-bold">{user?.displayName}</h1>
+            <Link to="/dashboard/user-home">Dashboard</Link>
             <Link to="/" onClick={handleLogout}>
               Logout
             </Link>

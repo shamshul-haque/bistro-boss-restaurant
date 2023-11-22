@@ -31,7 +31,7 @@ const NavbarSM = () => {
 
   return (
     <div className="flex items-center gap-3">
-      <Link to="/" className="relative">
+      <Link to="/dashboard/my-cart" className="relative">
         <FaShoppingCart className="text-2xl" />
         <span className="absolute -top-2 -right-2 bg-yellow-600 text-xs rounded-full px-1">
           {cart?.length}
@@ -54,6 +54,7 @@ const NavbarSM = () => {
                   className="w-10 rounded-full mx-auto"
                 />
                 <h1 className="font-bold">{user?.displayName}</h1>
+                <Link to="/dashboard/user-home">Dashboard</Link>
               </div>
             )}
             <NavLink
