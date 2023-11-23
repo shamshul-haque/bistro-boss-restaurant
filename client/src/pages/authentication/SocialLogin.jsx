@@ -21,7 +21,7 @@ const SocialLogin = () => {
       });
       if (res?.data?.success) {
         const userInfo = {
-          name: user?.user?.name,
+          name: user?.user?.displayName,
           email: user?.user?.email,
         };
         axiosPublic.post("/users", userInfo);
