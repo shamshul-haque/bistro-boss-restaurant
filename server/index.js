@@ -29,6 +29,12 @@ const client = new MongoClient(uri, {
   },
 });
 
+// db collections
+const menuCollection = client.db("bistroDB").collection("menus");
+const reviewCollection = client.db("bistroDB").collection("reviews");
+const userCollection = client.db("bistroDB").collection("users");
+const cartCollection = client.db("bistroDB").collection("carts");
+
 // middleware to verify token
 const verifyToken = (req, res, next) => {
   const { token } = req.cookies;
@@ -46,15 +52,26 @@ const verifyToken = (req, res, next) => {
   });
 };
 
+const verifyAdmin = async (req, res, next) => {
+  const decodedUser = req.user;
+  const query = { email: decodedUser.email };
+  const user = await userCollection.findOne(query);
+  const isAdmin = user.role === "admin";
+  if (!isAdmin) {
+    return res.status(403).send({ message: "Forbidden Access" });
+  }
+  next();
+};
+
 async function run() {
   try {
     // await client.connect();
 
-    // db collections
-    const menuCollection = client.db("bistroDB").collection("menus");
-    const reviewCollection = client.db("bistroDB").collection("reviews");
-    const userCollection = client.db("bistroDB").collection("users");
-    const cartCollection = client.db("bistroDB").collection("carts");
+    app.post("/api/v1/menus", verifyToken, verifyAdmin, async (req, res) => {
+      const item = req.body;
+      const result = await menuCollection.insertOne(item);
+      res.send(result);
+    });
 
     app.get("/api/v1/menus", async (req, res) => {
       const result = await menuCollection.find().toArray();
@@ -77,30 +94,61 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/api/v1/users", async (req, res) => {
+    app.get("/api/v1/users", verifyToken, verifyAdmin, async (req, res) => {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
 
-    app.patch("/api/v1/users/admin/:id", async (req, res) => {
-      const id = req.params.id;
-      const filter = { _id: new ObjectId(id) };
-      const updatedDoc = {
-        $set: {
-          role: "admin",
-        },
-      };
-      const result = await userCollection.updateOne(filter, updatedDoc);
-      res.send(result);
+    app.get("/api/v1/users/admin", verifyToken, async (req, res) => {
+      const queryEmail = req.query.email;
+      const tokenEmail = req.user.email;
+
+      if (queryEmail !== tokenEmail) {
+        return res.status(403).send({ message: "Forbidden Access" });
+      }
+
+      let query = {};
+      if (queryEmail) {
+        query.email = queryEmail;
+      }
+      const user = await userCollection.findOne(query);
+
+      let admin = false;
+      if (user) {
+        admin = user.role == "admin";
+      }
+
+      res.send({ admin });
     });
 
-    app.delete("/api/v1/users/:id", async (req, res) => {
-      const id = req.params.id;
-      console.log(id);
-      const query = { _id: new ObjectId(id) };
-      const result = await userCollection.deleteOne(query);
-      res.send(result);
-    });
+    app.patch(
+      "/api/v1/users/admin/:id",
+      verifyToken,
+      verifyAdmin,
+      async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: new ObjectId(id) };
+        const updatedDoc = {
+          $set: {
+            role: "admin",
+          },
+        };
+        const result = await userCollection.updateOne(filter, updatedDoc);
+        res.send(result);
+      }
+    );
+
+    app.delete(
+      "/api/v1/users/:id",
+      verifyToken,
+      verifyAdmin,
+      async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
+        const result = await userCollection.deleteOne(query);
+        res.send(result);
+      }
+    );
 
     app.post("/api/v1/users/access-token", async (req, res) => {
       const user = req.body;

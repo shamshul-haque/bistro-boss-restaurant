@@ -104,7 +104,7 @@ const Login = () => {
               <input
                 type="submit"
                 value="Login"
-                className="bg-yellow-600 transition-all duration-500 p-2 rounded uppercase text-white font-medium disabled:bg-slate-200 cursor-pointer"
+                className="bg-yellow-600 p-2 rounded uppercase text-white font-medium disabled:bg-slate-200 cursor-pointer"
               />
             </div>
           </form>

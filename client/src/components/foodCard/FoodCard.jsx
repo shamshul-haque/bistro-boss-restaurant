@@ -25,7 +25,7 @@ const FoodCard = ({ item }) => {
       };
       const res = await axiosPrivate.post("/users/cartItems", cartItem);
       if (res?.data?.insertedId) {
-        toast?.success("Item Added!", {
+        toast?.success("Item added to your cart!", {
           position: "top-right",
           theme: "colored",
         });

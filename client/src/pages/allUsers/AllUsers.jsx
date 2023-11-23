@@ -6,10 +6,12 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import Container from "../../components/container/Container";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
+import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const AllUsers = () => {
   const axiosPrivate = useAxiosPrivate();
+  const { user } = useAuth();
 
   const {
     data: users,
@@ -17,6 +19,7 @@ const AllUsers = () => {
     refetch,
   } = useQuery({
     queryKey: ["users"],
+    enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosPrivate.get("/users");
       return res?.data;
@@ -52,7 +55,7 @@ const AllUsers = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosPrivate.delete(`/users/${user?._id}`).then((res) => {
+        useAxiosPrivate.delete(`/users/${user?._id}`).then((res) => {
           if (res?.data?.deletedCount > 0) {
             refetch();
             Swal.fire({

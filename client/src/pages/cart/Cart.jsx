@@ -55,7 +55,7 @@ const Cart = () => {
           <div className="flex items-center justify-between uppercase">
             <h2 className="font-bold">Total Orders: {cart?.length}</h2>
             <h2 className="font-bold">Total Price: ${totalPrice}</h2>
-            <button className="bg-yellow-600 hover:bg-transparent px-3 py-1 rounded text-white hover:text-black hover:border hover:border-yellow-600 transition-all duration-500">
+            <button className="bg-yellow-600 px-3 py-1 rounded text-white">
               Pay
             </button>
           </div>

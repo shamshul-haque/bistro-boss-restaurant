@@ -12,9 +12,10 @@ import {
 import { ImSpoonKnife } from "react-icons/im";
 import { MdEmail, MdReviews } from "react-icons/md";
 import { NavLink, Outlet } from "react-router-dom";
+import useAdmin from "../hooks/useAdmin";
 
 const Dashboard = () => {
-  const isAdmin = true;
+  const { isAdmin } = useAdmin();
 
   return (
     <div className="flex">
