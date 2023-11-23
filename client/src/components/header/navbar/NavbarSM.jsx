@@ -2,6 +2,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
+import useAdmin from "../../../hooks/useAdmin";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useCart from "../../../hooks/useCart";
@@ -9,7 +10,9 @@ import useCart from "../../../hooks/useCart";
 const NavbarSM = () => {
   const { user, logoutUser } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const { isAdmin } = useAdmin();
   const { cart, isLoading } = useCart();
+
   if (isLoading) {
     return (
       <div className="w-full flex justify-center items-center">
@@ -54,7 +57,9 @@ const NavbarSM = () => {
                   className="w-10 rounded-full mx-auto"
                 />
                 <h1 className="font-bold">{user?.displayName}</h1>
-                <Link to="/dashboard/user-home">Dashboard</Link>
+                <Link to={`/dashboard/${isAdmin ? "admin-home" : "user-home"}`}>
+                  Dashboard
+                </Link>
               </div>
             )}
             <NavLink

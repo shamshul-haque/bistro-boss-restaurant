@@ -1,6 +1,7 @@
 import { FaShoppingCart } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
+import useAdmin from "../../../hooks/useAdmin";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useCart from "../../../hooks/useCart";
@@ -8,7 +9,9 @@ import useCart from "../../../hooks/useCart";
 const NavbarLG = () => {
   const { user, logoutUser } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const { isAdmin } = useAdmin();
   const { cart, isLoading } = useCart();
+
   if (isLoading) {
     return (
       <div className="w-full flex justify-center items-center">
@@ -83,7 +86,9 @@ const NavbarLG = () => {
             className="mt-3 z-50 p-5 shadow menu-sm dropdown-content bg-black rounded-box w-52 flex flex-col"
           >
             <h1 className="font-bold text-center mb-3">{user?.displayName}</h1>
-            <Link to="/dashboard/user-home">Dashboard</Link>
+            <Link to={`/dashboard/${isAdmin ? "admin-home" : "user-home"}`}>
+              Dashboard
+            </Link>
             <Link to="/" onClick={handleLogout}>
               Logout
             </Link>
