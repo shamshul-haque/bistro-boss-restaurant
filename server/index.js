@@ -53,6 +53,7 @@ async function run() {
     // db collections
     const menuCollection = client.db("bistroDB").collection("menus");
     const reviewCollection = client.db("bistroDB").collection("reviews");
+    const userCollection = client.db("bistroDB").collection("users");
     const cartCollection = client.db("bistroDB").collection("carts");
 
     app.get("/api/v1/menus", async (req, res) => {
@@ -62,6 +63,17 @@ async function run() {
 
     app.get("/api/v1/reviews", async (req, res) => {
       const result = await reviewCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.post("/api/v1/users", async (req, res) => {
+      const user = req.body;
+      const query = { email: user.email };
+      const isExistUser = await userCollection.findOne(query);
+      if (isExistUser) {
+        return res.send({ message: "User already exits", insertedId: null });
+      }
+      const result = await userCollection.insertOne(user);
       res.send(result);
     });
 

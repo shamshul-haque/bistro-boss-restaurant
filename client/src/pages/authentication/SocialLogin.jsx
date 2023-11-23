@@ -3,10 +3,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const SocialLogin = () => {
   const { googleLogin, logoutUser } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state?.from || "/";
@@ -18,6 +20,11 @@ const SocialLogin = () => {
         email: user?.user?.email,
       });
       if (res?.data?.success) {
+        const userInfo = {
+          name: user?.user?.name,
+          email: user?.user?.email,
+        };
+        axiosPublic.post("/users", userInfo);
         toast?.success("Login successful!", {
           position: "top-right",
           theme: "colored",

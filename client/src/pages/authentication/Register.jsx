@@ -5,11 +5,13 @@ import { toast } from "react-toastify";
 import auth_bg from "../../assets/auth/auth_bg.png";
 import auth_img from "../../assets/auth/auth_img.png";
 import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 import SocialLogin from "./SocialLogin";
 
 const Register = () => {
   const { createUser, updateUserProfile, logoutUser } = useAuth();
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
 
   const {
     register,
@@ -19,15 +21,23 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    reset();
     createUser(data?.email, data?.password)
       .then(() => {
         updateUserProfile(data?.name, data?.photo);
-        logoutUser();
-        navigate("/login");
-        toast?.success("Account created!", {
-          position: "top-right",
-          theme: "colored",
+        const userInfo = {
+          name: data?.name,
+          email: data?.email,
+        };
+        axiosPublic.post("/users", userInfo).then((res) => {
+          if (res?.data?.insertedId) {
+            reset();
+            logoutUser();
+            navigate("/login");
+            toast?.success("Account created!", {
+              position: "top-right",
+              theme: "colored",
+            });
+          }
         });
       })
       .catch((error) => {

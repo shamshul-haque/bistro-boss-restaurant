@@ -82,7 +82,7 @@ const NavbarLG = () => {
             tabIndex={0}
             className="mt-3 z-50 p-5 shadow menu-sm dropdown-content bg-black rounded-box w-52 flex flex-col"
           >
-            <h1 className="font-bold">{user?.displayName}</h1>
+            <h1 className="font-bold text-center mb-3">{user?.displayName}</h1>
             <Link to="/dashboard/user-home">Dashboard</Link>
             <Link to="/" onClick={handleLogout}>
               Logout

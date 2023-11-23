@@ -30,8 +30,7 @@ const Cart = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        const deleteItem = async () => {
-          const res = await axiosPrivate.delete(`/users/cartItems/${id}`);
+        axiosPrivate.delete(`/users/cartItems/${id}`).then((res) => {
           if (res?.data?.deletedCount > 0) {
             refetch();
             Swal.fire({
@@ -40,20 +39,7 @@ const Cart = () => {
               icon: "success",
             });
           }
-        };
-        deleteItem();
-
-        // alternate way
-        // axiosPrivate.delete(`/users/cartItems/${id}`).then((res) => {
-        //   if (res?.data?.deletedCount > 0) {
-        //     refetch();
-        //     Swal.fire({
-        //       title: "Deleted!",
-        //       text: "Your file has been deleted.",
-        //       icon: "success",
-        //     });
-        //   }
-        // });
+        });
       }
     });
   };
