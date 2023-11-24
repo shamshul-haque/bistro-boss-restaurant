@@ -53,8 +53,8 @@ const CheckoutForm = () => {
         payment_method: {
           card: card,
           billing_details: {
-            name: user?.displayName || "Anonymous",
-            email: user?.email || "Anonymous@gmail.com",
+            name: user?.displayName || "anonymous",
+            email: user?.email || "anonymous@gmail.com",
           },
         },
       });
@@ -94,7 +94,9 @@ const CheckoutForm = () => {
         Pay
       </button>
       <p className="text-red-500">{error}</p>
-      {transactionId && <p>Your transaction id: {transactionId}</p>}
+      {transactionId && (
+        <p className="text-green-400">Your transaction id: {transactionId}</p>
+      )}
     </form>
   );
 };

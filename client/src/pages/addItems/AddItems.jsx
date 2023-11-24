@@ -97,6 +97,7 @@ const AddItems = () => {
                 <label>Price</label>
                 <input
                   type="number"
+                  step="0.01"
                   {...register("price", {
                     required: true,
                   })}

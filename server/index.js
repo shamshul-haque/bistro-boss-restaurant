@@ -90,23 +90,28 @@ async function run() {
     });
 
     // update specific menu by verified admin
-    // doesn't work properly
-    app.patch("/api/v1/menus/:id", async (req, res) => {
-      const id = req.params.id;
-      const item = req.body;
-      const filter = { _id: new ObjectId(id) };
-      const updatedDoc = {
-        $set: {
-          name: item.name,
-          recipe: item.recipe,
-          image: item.image,
-          category: item.category,
-          price: item.price,
-        },
-      };
-      const result = await menuCollection.updateOne(filter, updatedDoc);
-      res.send(result);
-    });
+    app.patch(
+      "/api/v1/menus/:id",
+      verifyToken,
+      verifyAdmin,
+      async (req, res) => {
+        const id = req.params.id;
+        console.log(id);
+        const item = req.body;
+        const filter = { _id: new ObjectId(id) };
+        const updatedDoc = {
+          $set: {
+            name: item.name,
+            recipe: item.recipe,
+            image: item.image,
+            category: item.category,
+            price: item.price,
+          },
+        };
+        const result = await menuCollection.updateOne(filter, updatedDoc);
+        res.send(result);
+      }
+    );
 
     // delete specific menu by verified admin
     app.delete(

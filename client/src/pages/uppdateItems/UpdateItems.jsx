@@ -15,11 +15,13 @@ const UpdateItems = () => {
   const axiosPrivate = useAxiosPrivate();
   const axiosPublic = useAxiosPublic();
   const [item, setItem] = useState({});
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
     axiosPrivate.get(`/menus/${id}`).then((res) => {
       setItem(res.data);
+      setLoading(false);
     });
   }, [axiosPrivate, id]);
 
@@ -45,7 +47,7 @@ const UpdateItems = () => {
         category: data?.category,
         price: parseFloat(data?.price),
       };
-      const res = await axiosPrivate.patch(`/menus/${"_id"}`, menuItemInfo);
+      const res = await axiosPrivate.patch(`/menus/${id}`, menuItemInfo);
       console.log(res.data);
       if (res?.data?.modifiedCount > 0) {
         reset();
@@ -56,6 +58,14 @@ const UpdateItems = () => {
       }
     }
   };
+
+  if (loading) {
+    return (
+      <div className="w-full flex justify-center items-center">
+        <span className="loading loading-bars w-40 py-40"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="my-12">
@@ -108,6 +118,7 @@ const UpdateItems = () => {
                 <label>Price</label>
                 <input
                   type="number"
+                  step="0.01"
                   defaultValue={item?.price}
                   {...register("price", {
                     required: true,
