@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Container from "../../components/container/Container";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
@@ -9,9 +11,17 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 const imageHostingKey = import.meta.env.VITE_imageHostingKey;
 const imageHostingAPI = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 
-const AddItems = () => {
-  const axiosPublic = useAxiosPublic();
+const UpdateItems = () => {
   const axiosPrivate = useAxiosPrivate();
+  const axiosPublic = useAxiosPublic();
+  const [item, setItem] = useState({});
+  const { id } = useParams();
+
+  useEffect(() => {
+    axiosPrivate.get(`/menus/${id}`).then((res) => {
+      setItem(res.data);
+    });
+  }, [axiosPrivate, id]);
 
   const {
     register,
@@ -35,11 +45,11 @@ const AddItems = () => {
         category: data?.category,
         price: parseFloat(data?.price),
       };
-      const res = await axiosPrivate.post("/menus", menuItemInfo);
+      const res = await axiosPrivate.patch(`/menus/${"_id"}`, menuItemInfo);
       console.log(res.data);
-      if (res?.data?.insertedId) {
+      if (res?.data?.modifiedCount > 0) {
         reset();
-        toast?.success(`${data?.name} is added!`, {
+        toast?.success(`${data?.name} is updated!`, {
           position: "top-right",
           theme: "colored",
         });
@@ -50,9 +60,9 @@ const AddItems = () => {
   return (
     <div className="my-12">
       <Helmet>
-        <title>Add Items | Bistro Boss</title>
+        <title>Update Items | Bistro Boss</title>
       </Helmet>
-      <SectionTitle heading="ADD AN ITEM" subHeading="What's new?" />
+      <SectionTitle heading="UPDATE ITEM" subHeading="Make Update" />
       <Container>
         <div className="bg-gray-100 shadow-xl min-h-screen p-12 mt-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 mt-6">
@@ -60,6 +70,7 @@ const AddItems = () => {
               <label>Recipe Name</label>
               <input
                 type="text"
+                defaultValue={item?.name}
                 {...register("name", {
                   required: true,
                 })}
@@ -77,7 +88,7 @@ const AddItems = () => {
                   {...register("category", {
                     required: true,
                   })}
-                  defaultValue="default"
+                  defaultValue={item?.category}
                   className="outline-0 border p-2 rounded text-sm"
                 >
                   <option disabled value="default">
@@ -97,6 +108,7 @@ const AddItems = () => {
                 <label>Price</label>
                 <input
                   type="number"
+                  defaultValue={item?.price}
                   {...register("price", {
                     required: true,
                   })}
@@ -112,6 +124,7 @@ const AddItems = () => {
               <label>Recipe Details</label>
               <textarea
                 type="text"
+                defaultValue={item?.recipe}
                 {...register("recipe", { required: true })}
                 className="outline-0 border p-2 rounded text-sm"
                 placeholder="Recipe Details"
@@ -135,8 +148,8 @@ const AddItems = () => {
             <div className="form-control flex items-center">
               <input
                 type="submit"
-                value="Add"
-                className="bg-yellow-600 p-2 rounded uppercase text-white font-medium cursor-pointer"
+                value="Update"
+                className="bg-yellow-600 transition-all duration-500 p-2 rounded uppercase text-white font-medium cursor-pointer"
               />
             </div>
           </form>
@@ -146,4 +159,4 @@ const AddItems = () => {
   );
 };
 
-export default AddItems;
+export default UpdateItems;

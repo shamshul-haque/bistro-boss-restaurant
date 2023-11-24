@@ -12,7 +12,9 @@ import Home from "../pages/home/Home";
 import UserHome from "../pages/home/UserHome";
 import ManageItems from "../pages/manageItems/ManageItems";
 import OurMenu from "../pages/menu/OurMenu";
+import Payments from "../pages/payments/Payments";
 import OurShop from "../pages/shop/OurShop";
+import UpdateItems from "../pages/uppdateItems/UpdateItems";
 import AdminRoutes from "./AdminRoutes";
 import PrivateRoutes from "./PrivateRoutes";
 
@@ -71,6 +73,10 @@ const router = createBrowserRouter([
         path: "my-cart",
         element: <Cart />,
       },
+      {
+        path: "payments",
+        element: <Payments />,
+      },
 
       // admin dashboard
       {
@@ -94,6 +100,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoutes>
             <ManageItems />
+          </AdminRoutes>
+        ),
+      },
+      {
+        path: "update-items/:id",
+        element: (
+          <AdminRoutes>
+            <UpdateItems />
           </AdminRoutes>
         ),
       },

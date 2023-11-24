@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet";
 import { MdDelete } from "react-icons/md";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import Container from "../../components/container/Container";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
@@ -55,9 +56,14 @@ const Cart = () => {
           <div className="flex items-center justify-between uppercase">
             <h2 className="font-bold">Total Orders: {cart?.length}</h2>
             <h2 className="font-bold">Total Price: ${totalPrice}</h2>
-            <button className="bg-yellow-600 px-3 py-1 rounded text-white">
-              Pay
-            </button>
+            <Link to="/dashboard/payments">
+              <button
+                disabled={!cart.length}
+                className="bg-yellow-600 disabled:bg-gray-300 px-3 py-1 rounded text-white"
+              >
+                Pay
+              </button>
+            </Link>
           </div>
           <div className="overflow-x-auto mt-6">
             <table className="table">

@@ -11,7 +11,7 @@ const useCart = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["cart"],
+    queryKey: ["cart", user?.email],
     queryFn: async () => {
       const res = await axiosPrivate.get(
         `/users/cartItems?email=${user?.email}`

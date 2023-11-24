@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import Container from "../../components/container/Container";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
@@ -81,9 +82,11 @@ const ManageItems = () => {
                     <td>{item?.name}</td>
                     <td>{item?.price}</td>
                     <td className="text-center">
-                      <button className="text-white text-xl bg-yellow-600 p-2 rounded">
-                        <FaRegEdit />
-                      </button>
+                      <Link to={`/dashboard/update-items/${item?._id}`}>
+                        <button className="text-white text-xl bg-yellow-600 p-2 rounded">
+                          <FaRegEdit />
+                        </button>
+                      </Link>
                     </td>
                     <td className="text-center">
                       <button

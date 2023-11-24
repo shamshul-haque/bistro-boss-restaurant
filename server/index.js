@@ -4,6 +4,7 @@ require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const stripe = require("stripe")(process.env.Stripe_Secret_Key);
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -67,17 +68,47 @@ async function run() {
   try {
     // await client.connect();
 
+    // add new menu by verified admin
     app.post("/api/v1/menus", verifyToken, verifyAdmin, async (req, res) => {
       const item = req.body;
       const result = await menuCollection.insertOne(item);
       res.send(result);
     });
 
+    // get all menus
     app.get("/api/v1/menus", async (req, res) => {
       const result = await menuCollection.find().toArray();
       res.send(result);
     });
 
+    // get specific menu by verified admin
+    app.get("/api/v1/menus/:id", verifyToken, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await menuCollection.findOne(query);
+      res.send(result);
+    });
+
+    // update specific menu by verified admin
+    // doesn't work properly
+    app.patch("/api/v1/menus/:id", async (req, res) => {
+      const id = req.params.id;
+      const item = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updatedDoc = {
+        $set: {
+          name: item.name,
+          recipe: item.recipe,
+          image: item.image,
+          category: item.category,
+          price: item.price,
+        },
+      };
+      const result = await menuCollection.updateOne(filter, updatedDoc);
+      res.send(result);
+    });
+
+    // delete specific menu by verified admin
     app.delete(
       "/api/v1/menus/:id",
       verifyToken,
@@ -90,11 +121,13 @@ async function run() {
       }
     );
 
+    // get all reviews
     app.get("/api/v1/reviews", async (req, res) => {
       const result = await reviewCollection.find().toArray();
       res.send(result);
     });
 
+    // add new users
     app.post("/api/v1/users", async (req, res) => {
       const user = req.body;
       const query = { email: user.email };
@@ -106,11 +139,13 @@ async function run() {
       res.send(result);
     });
 
+    // get all user by verified admin
     app.get("/api/v1/users", verifyToken, verifyAdmin, async (req, res) => {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
 
+    // get specific user by checking who is normal user or an admin
     app.get("/api/v1/users/admin", verifyToken, async (req, res) => {
       const queryEmail = req.query.email;
       const tokenEmail = req.user.email;
@@ -133,6 +168,7 @@ async function run() {
       res.send({ admin });
     });
 
+    // make an user admin by existing verified admin
     app.patch(
       "/api/v1/users/admin/:id",
       verifyToken,
@@ -150,6 +186,7 @@ async function run() {
       }
     );
 
+    // delete an user by verified admin
     app.delete(
       "/api/v1/users/:id",
       verifyToken,
@@ -162,6 +199,7 @@ async function run() {
       }
     );
 
+    // create access token of an user
     app.post("/api/v1/users/access-token", async (req, res) => {
       const user = req.body;
       const token = jwt.sign(user, process.env.Secret_Token, {
@@ -176,6 +214,7 @@ async function run() {
         .send({ success: true });
     });
 
+    // clear token when user logged out
     app.post("/api/v1/users/logout", async (req, res) => {
       res
         .clearCookie("token", {
@@ -184,24 +223,40 @@ async function run() {
         .send({ success: true });
     });
 
-    app.post("/api/v1/users/cartItems", async (req, res) => {
+    // add item to cart by verified user
+    app.post("/api/v1/users/cartItems", verifyToken, async (req, res) => {
       const cartItem = req.body;
       const result = await cartCollection.insertOne(cartItem);
       res.send(result);
     });
 
-    app.get("/api/v1/users/cartItems", verifyToken, async (req, res) => {
+    // get all items from cart
+    app.get("/api/v1/users/cartItems", async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
       const result = await cartCollection.find(query).toArray();
       res.send(result);
     });
 
+    // delete specific item by verified user
     app.delete("/api/v1/users/cartItems/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await cartCollection.deleteOne(query);
       res.send(result);
+    });
+
+    app.post("/api/v1/users/payment-intent", verifyToken, async (req, res) => {
+      const { price } = req.body;
+      const amount = parseInt(price * 100);
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount,
+        currency: "usd",
+        payment_method_types: ["card"],
+      });
+      res.send({
+        clientSecret: paymentIntent.client_secret,
+      });
     });
 
     // confirm server connection
