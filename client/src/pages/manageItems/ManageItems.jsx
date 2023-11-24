@@ -1,30 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet";
-import { FaUser } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import Container from "../../components/container/Container";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
-import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useMenu from "../../hooks/useMenu";
 
-const AllUsers = () => {
+const ManageItems = () => {
   const axiosPrivate = useAxiosPrivate();
-  const { user } = useAuth();
-
-  const {
-    data: users,
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["users"],
-    enabled: !!user?.email,
-    queryFn: async () => {
-      const res = await axiosPrivate.get("/users");
-      return res?.data;
-    },
-  });
+  const { menu, isLoading, refetch } = useMenu();
   if (isLoading) {
     return (
       <div className="w-full flex justify-center items-center">
@@ -33,18 +18,7 @@ const AllUsers = () => {
     );
   }
 
-  const handleRole = async (user) => {
-    const res = await axiosPrivate.patch(`/users/admin/${user?._id}`);
-    if (res?.data?.modifiedCount > 0) {
-      refetch();
-      toast?.success(`${user?.name} is an admin now.`, {
-        position: "top-right",
-        theme: "colored",
-      });
-    }
-  };
-
-  const handleDelete = (user) => {
+  const handleDelete = (item) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -55,12 +29,13 @@ const AllUsers = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosPrivate.delete(`/users/${user?._id}`).then((res) => {
+        axiosPrivate.delete(`/menus/${item?._id}`).then((res) => {
+          console.log(res.data);
           if (res?.data?.deletedCount > 0) {
             refetch();
             Swal.fire({
               title: "Deleted!",
-              text: `${user?.name} has been deleted.`,
+              text: `${item?.name} has been deleted.`,
               icon: "success",
             });
           }
@@ -72,47 +47,48 @@ const AllUsers = () => {
   return (
     <div className="my-12">
       <Helmet>
-        <title>All Users | Bistro Boss</title>
+        <title>Manage Items | Bistro Boss</title>
       </Helmet>
-      <SectionTitle heading="MANAGE ALL USERS" subHeading="How many??" />
+      <SectionTitle heading="MANAGE ALL ITEMS" subHeading="Hurry Up!" />
       <Container>
         <div className="bg-white shadow-xl min-h-screen p-12 mt-6">
           <div className="uppercase">
-            <h2 className="font-bold">Total Users: {users?.length}</h2>
+            <h2 className="font-bold">Total Items: {menu?.length}</h2>
           </div>
           <div className="overflow-x-auto mt-6">
             <table className="table">
               <thead className="bg-yellow-600">
                 <tr className="uppercase text-white">
                   <th>Sl</th>
+                  <th>Image</th>
                   <th>Name</th>
-                  <th>Email</th>
-                  <th className="text-center">Role</th>
+                  <th>Price</th>
+                  <th className="text-center">Update</th>
                   <th className="text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {users?.map((user, index) => (
-                  <tr key={user._id}>
+                {menu?.map((item, index) => (
+                  <tr key={item._id}>
                     <th>{index + 1}</th>
-                    <td>{user?.name}</td>
-                    <td>{user?.email}</td>
-                    <td className="text-center">
-                      {user.role === "admin" ? (
-                        "Admin"
-                      ) : (
-                        <button
-                          onClick={() => handleRole(user)}
-                          className="text-white text-xl bg-yellow-600 p-2 rounded"
-                        >
-                          <FaUser />
-                        </button>
-                      )}
+                    <td>
+                      <img
+                        src={item?.image}
+                        alt="item image"
+                        className="w-12 h-12"
+                      />
                     </td>
-                    <td className="text-white text-xl flex justify-center">
+                    <td>{item?.name}</td>
+                    <td>{item?.price}</td>
+                    <td className="text-center">
+                      <button className="text-white text-xl bg-yellow-600 p-2 rounded">
+                        <FaRegEdit />
+                      </button>
+                    </td>
+                    <td className="text-center">
                       <button
-                        onClick={() => handleDelete(user)}
-                        className="bg-red-500 p-2 rounded"
+                        onClick={() => handleDelete(item)}
+                        className="text-white text-xl bg-yellow-600 p-2 rounded"
                       >
                         <MdDelete />
                       </button>
@@ -128,4 +104,4 @@ const AllUsers = () => {
   );
 };
 
-export default AllUsers;
+export default ManageItems;

@@ -10,6 +10,7 @@ import Contact from "../pages/contact/Contact";
 import AdminHome from "../pages/home/AdminHome";
 import Home from "../pages/home/Home";
 import UserHome from "../pages/home/UserHome";
+import ManageItems from "../pages/manageItems/ManageItems";
 import OurMenu from "../pages/menu/OurMenu";
 import OurShop from "../pages/shop/OurShop";
 import AdminRoutes from "./AdminRoutes";
@@ -85,6 +86,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoutes>
             <AddItems />
+          </AdminRoutes>
+        ),
+      },
+      {
+        path: "manage-items",
+        element: (
+          <AdminRoutes>
+            <ManageItems />
           </AdminRoutes>
         ),
       },

@@ -78,6 +78,18 @@ async function run() {
       res.send(result);
     });
 
+    app.delete(
+      "/api/v1/menus/:id",
+      verifyToken,
+      verifyAdmin,
+      async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
+        const result = await menuCollection.deleteOne(query);
+        res.send(result);
+      }
+    );
+
     app.get("/api/v1/reviews", async (req, res) => {
       const result = await reviewCollection.find().toArray();
       res.send(result);
@@ -178,14 +190,14 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/api/v1/users/cartItems", async (req, res) => {
+    app.get("/api/v1/users/cartItems", verifyToken, async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
       const result = await cartCollection.find(query).toArray();
       res.send(result);
     });
 
-    app.delete("/api/v1/users/cartItems/:id", async (req, res) => {
+    app.delete("/api/v1/users/cartItems/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await cartCollection.deleteOne(query);
