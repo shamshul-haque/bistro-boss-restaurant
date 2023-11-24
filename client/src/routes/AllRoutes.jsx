@@ -13,6 +13,7 @@ import UserHome from "../pages/home/UserHome";
 import ManageItems from "../pages/manageItems/ManageItems";
 import OurMenu from "../pages/menu/OurMenu";
 import Payments from "../pages/payments/Payments";
+import PaymentsHistory from "../pages/payments/PaymentsHistory";
 import OurShop from "../pages/shop/OurShop";
 import UpdateItems from "../pages/uppdateItems/UpdateItems";
 import AdminRoutes from "./AdminRoutes";
@@ -70,12 +71,16 @@ const router = createBrowserRouter([
         element: <UserHome />,
       },
       {
-        path: "my-cart",
-        element: <Cart />,
-      },
-      {
         path: "payments",
         element: <Payments />,
+      },
+      {
+        path: "payment-history",
+        element: <PaymentsHistory />,
+      },
+      {
+        path: "my-cart",
+        element: <Cart />,
       },
 
       // admin dashboard

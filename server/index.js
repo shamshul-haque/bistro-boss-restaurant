@@ -35,6 +35,7 @@ const menuCollection = client.db("bistroDB").collection("menus");
 const reviewCollection = client.db("bistroDB").collection("reviews");
 const userCollection = client.db("bistroDB").collection("users");
 const cartCollection = client.db("bistroDB").collection("carts");
+const paymentCollection = client.db("bistroDB").collection("payments");
 
 // middleware to verify token
 const verifyToken = (req, res, next) => {
@@ -263,6 +264,32 @@ async function run() {
         clientSecret: paymentIntent.client_secret,
       });
     });
+
+    app.post("/api/v1/users/payment-history", async (req, res) => {
+      const payment = req.body;
+      const paymentResult = await paymentCollection.insertOne(payment);
+      const query = {
+        _id: {
+          $in: payment.cartIds.map((id) => new ObjectId(id)),
+        },
+      };
+      const cartResult = await cartCollection.deleteMany(query);
+      res.send({ paymentResult, cartResult });
+    });
+
+    app.get(
+      "/api/v1/users/payment-history/:email",
+      verifyToken,
+      async (req, res) => {
+        const query = { email: req.params.email };
+
+        if (req.params.email !== req.user.email) {
+          return res.status(403).send({ message: "forbidden access" });
+        }
+        const result = await paymentCollection.find(query).toArray();
+        res.send(result);
+      }
+    );
 
     // confirm server connection
     await client.db("admin").command({ ping: 1 });
