@@ -174,6 +174,37 @@ async function run() {
       res.send({ admin });
     });
 
+    // get admin states by verified admin
+    app.get(
+      "/api/v1/users/admin-stats",
+      verifyToken,
+      verifyAdmin,
+      async (req, res) => {
+        const users = await userCollection.estimatedDocumentCount();
+        const menus = await menuCollection.estimatedDocumentCount();
+        const orders = await paymentCollection.estimatedDocumentCount();
+        const result = await paymentCollection
+          .aggregate([
+            {
+              $group: {
+                _id: null,
+                totalRevenue: {
+                  $sum: "$price",
+                },
+              },
+            },
+          ])
+          .toArray();
+        const revenue = result.length > 0 ? result[0].totalRevenue : 0;
+        res.send({
+          users,
+          menus,
+          orders,
+          revenue,
+        });
+      }
+    );
+
     // make an user admin by existing verified admin
     app.patch(
       "/api/v1/users/admin/:id",
