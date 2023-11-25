@@ -5,6 +5,7 @@ import useAuth from "./useAuth";
 
 const axiosPrivate = axios.create({
   baseURL: "http://localhost:5000/api/v1",
+  // baseURL: "https://server-eta-smoky.vercel.app/api/v1",
   withCredentials: true,
 });
 
