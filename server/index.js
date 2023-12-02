@@ -5,6 +5,14 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const stripe = require("stripe")(process.env.Stripe_Secret_Key);
+const formData = require("form-data");
+const Mailgun = require("mailgun.js");
+const mailgun = new Mailgun(formData);
+
+const mg = mailgun.client({
+  username: "api",
+  key: process.env.Mailgun_Api_Key,
+});
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -309,6 +317,22 @@ async function run() {
         },
       };
       const cartResult = await cartCollection.deleteMany(query);
+
+      mg.messages
+        .create(process.env.Mailgun_Sending_Domain, {
+          from: "Mailgun Sandbox <postmaster@sandbox110fb794d5134ed9a17862d9c1f0a6d6.mailgun.org>",
+          to: ["shamshul.haque.dev@gmail.com"],
+          subject: "Bistro Boss Ordered Confirmed",
+          text: "Testing some Mailgun awesomness!",
+          html: `
+          <div>
+            <h2>Thank you for your order!</h2>
+            <p>Your Transaction Id: <strong>${payment.transactionId}</strong></p>
+          </div>`,
+        })
+        .then((msg) => console.log(msg))
+        .catch((err) => console.log(err));
+
       res.send({ paymentResult, cartResult });
     });
 
